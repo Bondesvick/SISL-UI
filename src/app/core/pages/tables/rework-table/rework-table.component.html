@@ -1,0 +1,78 @@
+<div class="main">
+
+  <div class="spool-area">
+   <button  mat-raised-button color="primary" (click)="exportAsXLSX()">Export as Excel <mat-icon><span class="material-icons">
+     sticky_note_2
+     </span></mat-icon></button>
+   
+   <button mat-raised-button color="primary" (click)="openDialog()">Spool Report</button>
+  </div>
+
+  <section *ngIf="showSpinner">
+    <mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="value"
+      [bufferValue]="bufferValue">
+    </mat-progress-bar>
+  </section>
+<!-- ######################### -->
+<div class="details-table">
+
+ <table style="min-width: 100%;">
+   <tr style="background-color: #CAE3FC;">
+       <th>First Name</th>
+       <th>Last Name</th>
+       <th>Gender</th>
+       <!-- <th>Date of birth</th> -->
+       <!-- <th>Country</th> -->
+       
+       <th>Bant Acct Number</th>
+       <th>Bank Acct Name</th>
+
+       <!-- <th>Reason for rework</th> -->
+       <!-- <th>Status</th> -->
+
+       <th>Date Submitted</th>
+
+       <th></th>
+       <th></th>
+      
+   </tr>
+   <tr style="border-bottom: 2px solid #CAE3FC;" *ngFor="let application of applications">
+       <td>{{application.firstName}}</td>
+       <td>{{application.sureName}}</td>
+       <td>{{application.sex == "1" ? 'Male' : application.sex == "2"? 'Female' : 'Null'}}</td>
+       <!-- <td>{{application.dateOfBirth | date}}</td> -->
+       <!-- <td>{{application.country}}</td> -->
+       <td>{{application.bankAccNumber}}</td>
+       <td>{{application.bankAcctName}}</td>
+
+       <!-- <td>{{application.reasonForRework}}</td> -->
+
+       <!-- <td>{{application.status}}</td> -->
+       <!-- <td>application.nessLevyPayable</td> -->
+       <td>{{application.initiatedDate | date}}</td>
+
+       <td><button class="tab_rw_btn" (click)="openReworkReasonDialog(application.reasonForRework)">Rework Reason</button></td>
+       <td><button class="tab_btn" (click)="navigate('/SislAccountManagement/capture-page', application.id)">Edit</button></td>
+
+   </tr>
+ 
+   </table>
+   <p *ngIf="applications.length < 1">No data</p>
+   <mat-spinner *ngIf="applications.length < 1 && loadSpinner"></mat-spinner>
+
+   <pagination *ngIf="applications.length > 0"
+   [boundaryLinks]="true" 
+   [totalItems]="pagination?.totalItems"
+   [itemsPerPage]="pagination?.itemsPerPage"
+   [(ngModel)]="pagination!.currentPage"
+   (pageChanged)="pageChanged($event)"
+   previousText="&lsaquo;" 
+   nextText="&rsaquo;" 
+   firstText="&laquo;" 
+   lastText="&raquo;">
+ </pagination>
+</div>
+ 
+
+ <!-- <pagination [totalItems]="30"></pagination> -->
+</div>

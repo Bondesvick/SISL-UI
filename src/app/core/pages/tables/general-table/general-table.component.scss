@@ -1,0 +1,35 @@
+.main{
+    .spool-area{
+        display: flex;
+        justify-content: flex-end;
+
+        button{
+            margin: 0px 0px 0px 10px;
+            height: 45px;
+        }
+    }
+
+    .details-table{
+        margin: 10px 20px;
+        //max-width: 80px;
+        width: 100% !important;
+        padding: 5px;
+
+        tr{
+            margin: 50px 0px !important;
+            height: 45px;
+            //max-width: 30px !important;
+            //background-color: #991e51;
+
+            button{
+                background-color:#205CA1;
+                color: #fff;
+                border: none;
+                height: 30px;
+                width: 80px;
+                border-radius: 5px;
+            }
+        }
+    }
+
+}

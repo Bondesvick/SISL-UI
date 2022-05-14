@@ -1,0 +1,348 @@
+<div class="main">
+
+  <section *ngIf="showSpinner">
+    <mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="value"
+      [bufferValue]="bufferValue">
+    </mat-progress-bar>
+  </section>
+     
+  <!-- ######################### -->
+  <mat-spinner *ngIf="!service.application"></mat-spinner>
+
+ <div class="details-data" *ngIf="service.application">
+
+  <div class="data-right">
+
+    <div>
+      <h2>Account Type: <b>{{service.application?.accountType}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Title: <b>{{service.application?.title}}</b></h2>
+    </div>
+
+    <div>
+     <h2>Surname: <b>{{service.application?.sureName}}</b></h2>
+   </div>
+
+   <div>
+    <h2>Date of Birth: <b>{{service.application?.dateOfBirth | date}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Marital Status: <b>{{service.application?.maritalStatus}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Permanent Address: <b>{{service.application?.permanentAddress}}</b></h2>
+  </div>
+
+  <div>
+    <h2>State: <b>{{service.application?.state}}</b></h2>
+  </div>
+
+  <div>
+    <h2>LGA: <b>{{service.application?.lga}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Telephone: <b>{{service.application?.telephone}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Occupation: <b>{{service.application?.occupation}}</b></h2>
+  </div>
+   
+   <div>
+    <h2>Employment Type: <b>{{service.application?.compName}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Source Of Investment: <b>{{service.application?.sourceofInvestment}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Office Email: <b>{{service.application?.officeEmail}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Official Address: <b>{{service.application?.officialAddress}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Bank Name: <b>{{service.application?.bankAcctName}}</b></h2>
+  </div>
+
+  <div>
+    <h2>BVN: <b>{{service.application?.bvn}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Means Of Id Issue Date: <b>{{service.application?.meansOfIDIssueDate | date}}</b></h2>
+  </div>
+
+  <br>
+  <br>
+
+  <div>
+    <h2>Politically Exposed: <b>{{service.application?.politicallyExposed}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Politically Exposed Person: <b>{{service.application?.politicallyExposedPerson}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Date Of Office: <b>{{service.application?.dateOfOffice | date}}</b></h2>
+  </div>
+
+  <br>
+  <br>
+
+  <div>
+    <h2>Next of Kin: <b>{{service.application?.nextOfKin}}</b></h2>
+  </div>
+
+  <div>
+    <h2>Next of Kin Othernames: <b>{{service.application?.nextOfKinOtherNames}}</b></h2>
+  </div>
+
+  <div>
+    <h2>NOK Contact Address: <b>{{service.application?.contactAddress}}</b></h2>
+  </div>
+
+  <div>
+    <h2>NOK Email: <b>{{service.application?.nextOfKinEmail}}</b></h2>
+  </div>
+
+  <div>
+    <h2>NOK Date of Birth: <b>{{service.application?.nokDateOfBirth | date}}</b></h2>
+  </div>
+
+
+
+  <br>
+  <br>
+   <div>
+    <h2>Status: <b>{{service.application?.status}}</b></h2>
+  </div>
+
+  </div>
+
+  <!-- ############################ -->
+
+  <div class="data-left">
+    <div>
+      <h2>CustomerId: <b>{{service.application?.custAid}}</b></h2>
+    </div>
+
+    <div>
+      <h2>First Name: <b>{{service.application?.firstName}}</b> </h2>
+    </div>
+
+    <div>
+      <h2>Other Names: <b>{{service.application?.otherNames}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Gender: <b>{{service.application?.sex == '1' ? 'Male' : 
+       service.application?.sex == '2' ? 'Female' : 'Null'}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Mothers Maiden Name: <b>{{service.application?.mothersMaidenName}}</b></h2>
+    </div>
+
+    <div>
+      <h2>City: <b>{{service.application?.city}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Country: <b>{{service.application?.country}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Email Address: <b>{{service.application?.emailAddress}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Home Phone: <b>{{service.application?.homePhone}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Comp Name: <b>{{service.application?.compName}}</b></h2>
+    </div>
+ 
+    <div>
+      <h2>Average Annual Income: <b>{{service.application?.averageAnnualIncome}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Purpose Of Investment: <b>{{service.application?.purposeofInvestment}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Office Phone Number: <b>{{service.application?.officePhoneNumber}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Bank Account Number: <b>{{service.application?.bankAccNumber}}</b></h2>
+    </div>
+
+    <div>
+      <h2>ID Type: <b>{{service.application?.idType}}</b></h2>
+    </div>
+
+    <div>
+      <h2>ID Number: <b>{{service.application?.idNumber}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Means Of Id Expiration Date: <b>{{service.application?.meansOfIDExpirationDate | date}}</b></h2>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+      <h2>PEP Who: <b>{{service.application?.pepWho}}</b></h2>
+    </div>
+
+    <div>
+      <h2>Position Held: <b>{{service.application?.positionHeld}}</b></h2>
+    </div>
+
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+
+    <!-- <div>
+      <h2>Bank Code: <b>{{service.application?.bankCode}}</b></h2>
+    </div> -->
+
+    
+
+    <div>
+      <h2>Next of Kin Surname: <b>{{service.application?.nextOfKinSurname}}</b></h2>
+    </div>
+
+
+    <div>
+      <h2>Relationship: <b>{{service.application?.relationship}}</b></h2>
+    </div>
+
+    <div>
+      <h2>NOK Phone: <b>{{service.application?.nextOfKinPhone}}</b></h2>
+    </div>
+
+    <div>
+      <h2>NOK Nationality: <b>{{service.application?.nokNationality}}</b></h2>
+    </div>
+
+    <div>
+      <h2>NOK Gender: <b>{{service.application?.nextOfKinGender}}</b></h2>
+    </div>
+
+
+    <br>
+  <br>
+   <div *ngIf="service.application?.risk">
+    <h2>Risk: <b>{{service.application?.risk}}</b></h2>
+  </div>
+
+    <!-- <div>
+      <h2>Bank Name: <b>{{service.application?.bankAcctName}}</b></h2>
+    </div> -->
+
+   
+
+    <!-- <div>
+      <h2>Branch Code: <b>{{service.application?.branchCode}}</b></h2>
+    </div> -->
+  </div>
+  
+ </div>
+
+ <span style="font-size: 20px; font-weight: bold;">
+  {{service?.application?.sislDocuments?.length > 0 ? "Documents:" : "No Document"}}</span>
+ <div class="document-area" *ngIf="service?.application?.sislDocuments?.length > 0">
+ 
+  <div *ngFor="let each of service?.application?.sislDocuments" 
+  style="margin: 10px; 
+        background-color: rgb(220, 235, 241);
+        padding: 5px 25px; border-radius: 5px;">
+    <span style="font-size: 15px; font-weight: bold;">{{ each.title }}</span>
+
+    <button mat-button color="primary" (click)="
+        openDocument(
+          each.contentOrPath,
+          each.fileName,
+          each.contentType
+        )
+      ">
+      View
+    </button>
+
+    <button mat-button color="primary" (click)="
+        downloadDocument(
+          each.contentOrPath,
+          each.fileName,
+          each.contentType
+        )
+      ">
+      Download
+    </button>
+   
+  </div>
+ </div>
+    
+ <div class="comment-area">
+  <mat-form-field appearance="fill">
+    <mat-label>Comments</mat-label>
+    <textarea matInput placeholder="comments..." [(ngModel)]="comment" [disabled]="showSpinner || !service.application"></textarea>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="current === 'compliance-table'" style="width: 200px; margin-left: 10px;">
+    <mat-label>Risk Type</mat-label>
+    <mat-select [formControl]="riskControl" [disabled]="showSpinner || !service.application">
+      <mat-option value="H_Risk">High Risk</mat-option>
+      <mat-option value="M_Risk">Medium Risk</mat-option>
+      <mat-option value="L_Risk">Low Risk</mat-option>
+    </mat-select>
+    <mat-hint align="end">Risk Type</mat-hint>
+    <mat-error *ngIf="riskControl.hasError('required')">
+                        Risk Type is required </mat-error>
+  </mat-form-field>
+   
+ </div>
+
+ <!-- <div class="risk-select">
+  
+ </div> -->
+
+ <section *ngIf="showSpinner">
+  <mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="value"
+    [bufferValue]="bufferValue">
+  </mat-progress-bar>
+</section>
+
+ <div class="button-area">
+  <button mat-raised-button color="primary" (click)="clickSave('Approve')" [disabled]="showSpinner || !service.application || service.application?.status == 'Processed' || riskControl.invalid">Accept</button>
+  <button mat-raised-button color="warn" (click)="clickSave('Reject')" [disabled]="showSpinner || !service.application || service.application?.status == 'Processed' || riskControl.invalid">Reject</button>
+  <button mat-raised-button color="green" (click)="clickSave('Revert')" [disabled]="showSpinner || !service.application || riskControl.invalid">Rework</button>
+ </div>
+
+ <div class="history-area">
+  <div class="a-history" *ngFor="let each of service?.application?.sislHistories">
+    <p>Comment: <strong>{{each.comment}}</strong></p>
+    <p>Comment Date: <strong>{{each.commentDate | date:'medium'}}</strong></p>
+    <p>Comment By: <strong>{{each.commentBy}}</strong></p>
+    <p>SAP Id: <strong>{{each.lastUpdatedBy}}</strong></p>
+    <p>Status: <strong>{{each?.sislStatus?.status}}</strong></p>
+  </div>
+ </div>
+
+    <!-- <pagination [totalItems]="30"></pagination> -->
+</div>

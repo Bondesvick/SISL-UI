@@ -1,0 +1,187 @@
+.main{
+    min-width: 100%;
+    padding-bottom: 100px;
+    //background-color: red;
+
+    .search-area{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        //background-color: red;
+
+        .option-section{
+            margin: 0px 10px;
+            //background-color: #1E5799;
+            max-width: 30% !important;
+            //flex: 1;
+            //background-color: red;
+
+            .example-radio-group {
+                display: flex;
+                flex-direction: column;
+                margin: 15px 0;
+                max-width: 40%;
+              }
+              
+              .example-radio-button {
+                margin: 5px;
+                //background-color: red;
+              }
+        }
+
+        .cust-id-box{
+            margin: 0px 10px 10px 10px;
+            //background-color: red;
+            //flex: 1;
+            //display: flex;
+            max-width: 30% !important;
+
+            // .example-input{
+            //     //width: 40px;
+            // }
+        }
+
+        .validation-area{
+            button{
+                margin-left: 10px;
+                height: 50px;
+            }
+        }
+    }
+
+    // FORM FORM FORM FORM
+    .form-area{
+        //display: flex;
+        min-width: 100%;
+        justify-content: center;
+        //background-color: red;
+        form{
+            //background-color: #1E5799;
+            margin: auto, 0px;
+            //display: flex;
+            //justify-content: center;
+            //flex-wrap: wrap;
+
+            .personal-info-area{
+                width: 100%;
+                min-height: 10px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: #bcdafa 2px solid;
+                border-radius: 20px;
+                padding: 10px;
+                margin: 10px 0px;
+            }
+
+            .nextofkin-area{
+                width: 100%;
+                min-height: 10px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: #bcdafa 2px solid;
+                border-radius: 20px;
+                padding: 10px;
+                margin: 20px 0px;
+            }
+
+            .work-area{
+                width: 100%;
+                min-height: 10px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: #bcdafa 2px solid;
+                border-radius: 20px;
+                padding: 10px;
+                margin: 20px 0px;
+            }
+
+            .pep-area{
+                width: 100%;
+                min-height: 10px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: #bcdafa 2px solid;
+                border-radius: 20px;
+                padding: 10px;
+                margin: 10px 0px 40px 0px;
+            }
+
+            .id-area{
+                width: 100%;
+                min-height: 10px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                border: #bcdafa 2px solid;
+                border-radius: 20px;
+                padding: 10px;
+                margin: 20px 0px;
+            }
+        
+            mat-form-field{
+                //background-color: red;
+                margin: 10px;
+                width: 250px;
+            }
+        }
+
+        .file-area{
+            width: 100%;
+            //height: 700px;
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .upload-div{
+                background-color: #E5E5E5;
+                padding: 20px;
+                border-radius: 5px;
+                margin: 5px;
+                height:fit-content;
+    
+                &:hover{
+                    background-color: #CAE3FC;
+                }
+    
+                label{
+                    cursor: pointer;
+                    min-width: 100%;
+                    min-height: 100%;
+                }
+            }
+
+        }
+
+        .selected-file{
+            padding: 30px;
+            display: flex;
+            width: 100%;
+            height: fit-content;
+            flex-wrap: wrap;
+
+            .file-div{
+                margin: 10px;
+                background-color: #d9e6f3;
+                padding: 10px 20px;
+                border-radius: 20px;
+                display: flex;
+            }
+        }
+        
+        button{
+            outline: none;
+            margin: 20px 40px;
+            width: 150px;
+        }
+        //background-color: #1E5799;
+        // .example-container .mat-form-field + .mat-form-field {
+        //     margin-left: 8px;
+        //   }
+    }
+
+}

@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Spool for reports</h1>
+<div mat-dialog-content>
+  <form #spoolForm="ngForm">
+    <!-- <div *ngFor="let role of data.roles"> -->
+
+      <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 50px;">
+
+        <mat-form-field class="a_field" appearance="fill">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="injected.startDate" name="startDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+  
+        <mat-form-field class="a_field" appearance="fill">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="injected.endDate" name="endDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; width: 100%;">
+
+        <!-- <mat-form-field class="a_field" appearance="fill">
+          <mat-label>Count</mat-label>
+          <input type="number" matInput [(ngModel)]="injected.count" name="count">
+        </mat-form-field> -->
+
+        <!-- <mat-form-field class="a_field" appearance="fill">
+          <mat-label>Exporter Name</mat-label>
+          <input matInput [(ngModel)]="injected.exporterName" name="exporterName">
+        </mat-form-field> -->
+
+        <mat-form-field class="a_field" appearance="fill" *ngIf="injected.criteria === 'forAll'">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="injected.status" [ngModelOptions]="{standalone: true}">
+            <mat-option value="All">All</mat-option>
+            <mat-option value="Pending">Pending</mat-option>
+            <mat-option value="Approved">Approved</mat-option>
+            <mat-option value="Processing">Processing</mat-option>
+            <mat-option value="Processed">Processed</mat-option>
+            <mat-option value="Rework">Rework</mat-option>
+            <mat-option value="Rejected">Rejected</mat-option>
+          </mat-select>
+          
+        </mat-form-field>
+      </div>
+     
+    <!-- </div> -->
+  </form>
+  
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="injected" cdkFocusInitial [mat-dialog-close]="injected"
+  [disabled]="!injected.startDate || !injected.endDate">Search</button>
+</div>

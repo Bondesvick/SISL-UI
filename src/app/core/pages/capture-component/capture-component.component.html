@@ -1,0 +1,900 @@
+
+  <div class="main">
+
+    <div class="search-area">
+      <div class="option-section">
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="operationSelection">
+          <mat-radio-button (change)="reqChange()" class="example-radio-button" *ngFor="let operation of operations" [value]="operation">
+            {{operation}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+  
+      <div *ngIf="operationSelection === 'Existing Request'" class="cust-id-box">
+        <mat-form-field class="example-input">
+          <mat-label>Enter Cusomer Id</mat-label>
+          <input matInput placeholder="Customer Id" [disabled]="showSpinner" maxlength="10" 
+          [(ngModel)]="CustomerId" (keyup)="custIdChange()" (keypress)="numericOnly($event)">
+        </mat-form-field>
+      
+      </div>
+
+      <div *ngIf="fetchData?.length > 0">
+        <mat-form-field>
+          <mat-label>Select Account</mat-label>
+          <mat-select >
+            <mat-option *ngFor="let item of fetchData" value="IND" (click)="mapData(item)">{{item[46]}}</mat-option>
+            <!-- <mat-option value="CORP">Corporate</mat-option> -->
+          </mat-select>
+          
+        </mat-form-field>
+      </div>
+
+      <div class="validation-area">
+        <!-- <mat-form-field class="example-input">
+          <mat-label>Enter NIN</mat-label>
+          <input matInput placeholder="NIN" value="" maxlength="11" [(ngModel)]="NIN" (keypress)="numericOnly($event)">
+        </mat-form-field> -->
+        <button [disabled]="showSpinner || 
+                !IdentityType?.value || customerAccount?.IdType == 'International passport'" 
+                (click)="validateDetails()" mat-raised-button color="primary">Validate Details</button>
+      </div>
+    </div>
+
+    <div class="form-area">
+
+      <section *ngIf="showSpinner">
+        <mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="value"
+          [bufferValue]="bufferValue">
+        </mat-progress-bar>
+      </section>
+
+      <mat-tab-group mat-align-tabs="start">
+        <mat-tab label="Personal Information">
+
+          <form [formGroup]="customerAccountForm" id="customerForm">
+
+            <!-- ////////////////////////////////////////////////////// -->
+            <div class="personal-info-area">
+              <mat-form-field appearance="fill">
+                <mat-label>Account Type</mat-label>
+                <mat-select required formControlName="AccountType" [(ngModel)]="customerAccount.AccountType" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="IND">Individual</mat-option>
+                  <mat-option value="CORP">Corporate</mat-option>
+                </mat-select>
+                <mat-hint align="end">Account Type</mat-hint>
+                                <mat-error *ngIf="customerAccountForm.get('AccountType').hasError('required')">
+                                    Account Type is required </mat-error>
+                                <mat-error *ngIf="customerAccountForm.get('AccountType').hasError('pattern')">
+                                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Title</mat-label>
+                <mat-select required formControlName="Title" [(ngModel)]="customerAccount.Title" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let title of titles" value={{title}}>{{title}}</mat-option>
+                </mat-select>
+                <mat-hint align="end">Title</mat-hint>
+                                <mat-error *ngIf="customerAccountForm.get('Title').hasError('required')">
+                                    Title is required </mat-error>
+                                <mat-error *ngIf="customerAccountForm.get('Title').hasError('pattern')">
+                                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+        
+              <mat-form-field appearance="fill">
+               
+                <mat-label>Surname</mat-label>
+                <input required formControlName="Surname" matInput [(ngModel)]="customerAccount.SureName" [ngModelOptions]="{standalone: true}">
+                
+                <mat-hint align="end">Surname</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Surname').hasError('required')">
+                    Surname is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Surname').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+                    
+              </mat-form-field>
+            
+              <mat-form-field appearance="fill">
+                <mat-label>First Name</mat-label>
+                <input required formControlName="FirstName" matInput [(ngModel)]="customerAccount.FirstName" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">First Name</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('FirstName').hasError('required')">
+                    First Name is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('FirstName').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+        
+              <mat-form-field appearance="fill">
+                <mat-label>Other Names</mat-label>
+                <input formControlName="Othernames" matInput [(ngModel)]="customerAccount.OtherNames" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Other Name</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Othernames').hasError('required')">
+                    Other Name is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Othernames').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Date Of Birth</mat-label>
+                <input required formControlName="DateOfBirth" matInput type="date" [max]="today" [(ngModel)]="customerAccount.DateOfBirth" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Date of Birth</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('DateOfBirth').hasError('required')">
+                    Date Of Birth is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('DateOfBirth').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Gender</mat-label>
+                <mat-select required formControlName="Sex" [(ngModel)]="customerAccount.Sex" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="1">Male</mat-option>
+                  <mat-option value="2">Female</mat-option>
+                </mat-select>
+                <mat-hint align="end">Gender</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Sex').hasError('required')">
+                  Gender is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Sex').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Marital Status</mat-label>
+                <mat-select formControlName="MaritalStatus" [(ngModel)]="customerAccount.MaritalStatus" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let status of maritalStatus" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+                <mat-hint align="end">Marital Status</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('MaritalStatus').hasError('required')">
+                  Marital Status is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('MaritalStatus').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Mothers Maiden Name</mat-label>
+                <input required formControlName="MothersMaidenName" matInput [(ngModel)]="customerAccount.MothersMaidenName" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Mothers Maiden Name</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('MothersMaidenName').hasError('required')">
+                  Mothers Maiden Name is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('MothersMaidenName').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Permanent Address</mat-label>
+                <input required formControlName="PermanentAddress" matInput [(ngModel)]="customerAccount.PermanentAddress" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>place</mat-icon>
+                <mat-hint align="end">Permanent Address</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('PermanentAddress').hasError('required')">
+                  Permanent Address is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('PermanentAddress').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>City</mat-label>
+                <input required formControlName="City" matInput [(ngModel)]="customerAccount.City" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">City</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('City').hasError('required')">
+                  City is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('City').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+    
+              <mat-form-field appearance="fill">
+                <mat-label>Country</mat-label>
+                <input required type = "text"
+                   matInput 
+                   formControlName="Country"
+                   [matAutocomplete] = "auto"
+                   [(ngModel)]="customerAccount.Country"
+                   [ngModelOptions]="{standalone: true}" 
+                   (keypress)="validateCountry($event)"
+                   >
+                   <mat-hint align="end">Country</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Country').hasError('required')">
+                  Country is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Country').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+                
+                <mat-autocomplete
+                  #auto = "matAutocomplete"
+                  >
+                   <mat-option (click)="countryChange(country)" *ngFor="let country of filteredCountries | async" [value]="country">
+                      {{country}}
+                   </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+    
+              <mat-form-field appearance="fill">
+                <mat-label>State Of Origin</mat-label>
+                <input required type = "text"
+                   matInput 
+                   formControlName="State"
+                   [matAutocomplete]="state"
+                   [(ngModel)]="customerAccount.State"
+                   [ngModelOptions]="{standalone: true}"
+                   (keypress)="validateState($event)"
+                   >
+                   <mat-hint align="end">State of origin</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('State').hasError('required')">
+                  State is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('State').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+                
+                <mat-autocomplete
+                  #state="matAutocomplete"
+                  >
+                   <mat-option *ngFor="let state of filteredStates | async" [value]="state">
+                      {{state}}
+                   </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>LGA</mat-label>
+                <input required formControlName="LGA" matInput [(ngModel)]="customerAccount.LGA" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">LGA</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('LGA').hasError('required')">
+                  LGA is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('LGA').hasError('pattern')">
+                    Only numbers are allowed </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input required formControlName="EmailAddress" matInput [(ngModel)]="customerAccount.EmailAddress" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>mail</mat-icon>
+                <mat-hint align="end">Email Address</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('EmailAddress').hasError('required')">
+                  Email Address is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('EmailAddress').hasError('pattern')">
+                    Email entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Phone</mat-label>
+                <input required formControlName="Telephone" maxlength="11" minlength="11" matInput [(ngModel)]="customerAccount.Telephone" 
+                [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+                <mat-icon matSuffix>phone</mat-icon>
+                <mat-hint align="end">Phone, max 11 digits</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Telephone').hasError('required')">
+                  Phone number is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Telephone').hasError('pattern')">
+                    Phone number entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Home Phone</mat-label>
+                <input formControlName="HomePhone" [(ngModel)]="customerAccount.HomePhone" maxlength="11" minlength="11" matInput 
+                [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+                <mat-icon matSuffix>phone</mat-icon>
+                <mat-hint align="end">Home Phone, max 11 digits</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('HomePhone').hasError('required')">
+                  Home Phone number is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('HomePhone').hasError('pattern')">
+                    Phone number entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Occupation</mat-label>
+                <input required formControlName="Occupation" matInput [(ngModel)]="customerAccount.Occupation"
+                [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Occupation</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('Occupation').hasError('required')">
+                  Occupation is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('Occupation').hasError('pattern')">
+                    Phone number entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Company Name</mat-label>
+                <input required formControlName="CompName" matInput [(ngModel)]="customerAccount.CompName" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Company Name</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('CompName').hasError('required')">
+                  Company Name is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('CompName').hasError('pattern')">
+                    Phone number entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Employment Type</mat-label>
+                <mat-select required formControlName="EmploymentType" [(ngModel)]="customerAccount.EmploymentType" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="Employed">Employed</mat-option>
+                  <mat-option value="Self-employed">Self-employed</mat-option>
+                  <mat-option value="Others">Others</mat-option>
+                </mat-select>
+                <mat-hint align="end">Employment Type</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('EmploymentType').hasError('required')">
+                  Employment Type is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('EmploymentType').hasError('pattern')">
+                    Phone number entered is not valid</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Bank Name</mat-label>
+                <input required type = "text"
+                   matInput 
+                   formControlName="BankAcctName"
+                   [matAutocomplete]="bank"
+                   [(ngModel)]="customerAccount.BankAcctName"
+                   [ngModelOptions]="{standalone: true}"
+                   (keypress)="validateBank($event)"
+                   >
+                   <mat-hint align="end">Bank Name</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('BankAcctName').hasError('required')">
+                  Bank Name is required </mat-error>
+                
+                <mat-autocomplete
+                  #bank="matAutocomplete"
+                  >
+                   <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.code" 
+                   (click)="setValidationBankCode(bank.nipCode)">
+                      {{bank.name}}
+                   </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+    
+              <div style="
+                    border-radius: 10px; 
+                    border: 1px solid #bcdafa;
+                    display: flex;
+                    flex-wrap: wrap;">
+    
+                <!-- <mat-form-field appearance="fill">
+                  <mat-label>Bank Name</mat-label>
+                  <input formControlName="BankAcctName" matInput [(ngModel)]="customerAccount.BankAcctName" [ngModelOptions]="{standalone: true}">
+                  <mat-hint align="end">Bank Name</mat-hint>
+                  <mat-error *ngIf="customerAccountForm.get('BankAcctName').hasError('required')">
+                    Bank Name is required </mat-error>
+                </mat-form-field> -->
+        
+                <mat-form-field appearance="fill">
+                  <mat-label>Bank Account Number</mat-label>
+                  <input required formControlName="BankAcctNumber"  maxlength="10" minlength="10" matInput [(ngModel)]="customerAccount.BankAccNumber" [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+                  <mat-hint align="end">Bank Account Number, max 10</mat-hint>
+                  <mat-error *ngIf="customerAccountForm.get('BankAcctNumber').hasError('required')">
+                    Bank Account Number is required </mat-error>
+                  <mat-error *ngIf="customerAccountForm.get('BankAcctNumber').hasError('pattern')">
+                      Account number entered is not valid</mat-error>
+                </mat-form-field>
+    
+                <button mat-stroked-button color="primary" type="button"
+                  style="height: 50px;"
+                  [disabled]="showSpinner || !customerAccountForm.controls.BankAcctNumber.valid"
+                  (click)="validateAccountNumber()"
+                    >Validate Account</button>
+    
+              </div>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>BVN</mat-label>
+                <input required formControlName="BVNNumber" maxlength="11" minlength="11" matInput
+                [(ngModel)]="customerAccount.BVN" [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+                <mat-hint align="end">BVN Number, max 11</mat-hint>
+                <mat-error *ngIf="customerAccountForm.get('BVNNumber').hasError('required')">
+                  BVN is required </mat-error>
+                <mat-error *ngIf="customerAccountForm.get('BVNNumber').hasError('maxLength')">
+                    BVN number entered is not valid</mat-error>
+              </mat-form-field>
+            </div>
+    
+            <!-- ///////////////////////////////////////////////////////////// -->
+            
+          </form>
+
+        </mat-tab>
+
+        <mat-tab label="Other Details">
+
+          <form [formGroup]="otherForm">
+
+            <div class="nextofkin-area">
+              <mat-form-field appearance="fill">
+                <mat-label>Next Of Kin First Name</mat-label>
+                <input required formControlName="NextOfKin" matInput [(ngModel)]="customerAccount.NextOfKin" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Next Of Kin First Name</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextOfKin').hasError('required')">
+                  Next Of Kin is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextOfKin').hasError('pattern')">
+                  Next Of Kin entered is not valid</mat-error>
+              </mat-form-field>
+    
+              <mat-form-field appearance="fill">
+                <mat-label>Next Of Kin Surname</mat-label>
+                <input required formControlName="NextOfKinSurname" matInput [(ngModel)]="customerAccount.NextOfKinSurname" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Next Of Kin Surname</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextOfKinSurname').hasError('required')">
+                  Next Of Kin Surname is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextOfKinSurname').hasError('pattern')">
+                  Next Of Kin entered is not valid</mat-error>
+              </mat-form-field>
+    
+              <mat-form-field appearance="fill">
+                <mat-label>Next Of Kin Other Names</mat-label>
+                <input formControlName="NextOfKinOtherNames" matInput [(ngModel)]="customerAccount.NextOfKinOtherNames" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Next Of Kin Other Names</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextOfKinOtherNames').hasError('required')">
+                  Next Of Kin Other Names is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextOfKinOtherNames').hasError('pattern')">
+                  Next Of Kin entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Relationship</mat-label>
+                <input required formControlName="Relationship" matInput [(ngModel)]="customerAccount.Relationship" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>people</mat-icon>
+                <mat-hint align="end">Relationship with Next Of Kin</mat-hint>
+                <mat-error *ngIf="otherForm.get('Relationship').hasError('required')">
+                  Relationship is required </mat-error>
+                <mat-error *ngIf="otherForm.get('Relationship').hasError('pattern')">
+                  Next Of Kin entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Contact Address</mat-label>
+                <input required formControlName="ContactAddress" matInput [(ngModel)]="customerAccount.ContactAddress" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>place</mat-icon>
+                <mat-hint align="end">Next Of Kin Address</mat-hint>
+                <mat-error *ngIf="otherForm.get('ContactAddress').hasError('required')">
+                  Contact Address is required </mat-error>
+                <mat-error *ngIf="otherForm.get('ContactAddress').hasError('pattern')">
+                  Contact Address entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Next of Kin Phone</mat-label>
+                <input required formControlName="NextofKinPhone" (keypress)="numericOnly($event)" matInput [(ngModel)]="customerAccount.NextOfKinPhone" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>phone</mat-icon>
+                <mat-hint align="end">Next Of Kin Phone Number</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextofKinPhone').hasError('required')">
+                  Next of Kin Phone is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextofKinPhone').hasError('pattern')">
+                  Next of Kin Phone entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Next Of Kin Email</mat-label>
+                <input formControlName="NextOfKinEmail" matInput [(ngModel)]="customerAccount.NextOfKinEmail" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>mail</mat-icon>
+                <mat-hint align="end">Next Of Kin Email</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextOfKinEmail').hasError('required')">
+                  Next Of Kin Email is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextOfKinEmail').hasError('pattern')">
+                  Email entered is not valid</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>NOK Nationality</mat-label>
+                <input required type = "text"
+                   matInput 
+                   formControlName="NOKNationality"
+                   [matAutocomplete] = "nokcount"
+                   [(ngModel)]="customerAccount.NOKNationality"
+                   [ngModelOptions]="{standalone: true}" 
+                   (keypress)="validateNOKCountry($event)"
+                   >
+                   <mat-hint align="end">Next Of Kin Nationality</mat-hint>
+                <mat-error *ngIf="otherForm.get('NOKNationality').hasError('required')">
+                  Next Of Kin Nationality is required </mat-error>
+                <mat-autocomplete #nokcount = "matAutocomplete">
+                   <mat-option *ngFor="let country of filteredNOKCountries | async" [value]="country">
+                      {{country}}
+                   </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Next of Kin Gender</mat-label>
+                <mat-select required formControlName="NextofKinGender" [(ngModel)]="customerAccount.NextOfKinGender" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+                <mat-hint align="end">Next of Kin Gender</mat-hint>
+                <mat-error *ngIf="otherForm.get('NextofKinGender').hasError('required')">
+                  Next of Kin Gender is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NextofKinGender').hasError('pattern')">
+                  Next of Kin Gender entered is not valid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Next of Kin Date of Birth</mat-label>
+                <input required formControlName="NOKDateOfBirth" matInput type="date" [max]="today" [(ngModel)]="customerAccount.NOKDateOfBirth" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Next of Kin Date of Birth</mat-hint>
+                <mat-error *ngIf="otherForm.get('NOKDateOfBirth').hasError('required')">
+                  Next of Kin Date of Birth is required </mat-error>
+                <mat-error *ngIf="otherForm.get('NOKDateOfBirth').hasError('pattern')">
+                  Next of Kin Date of Birth entered is not valid</mat-error>
+              </mat-form-field>
+      
+            </div>
+            
+            <!-- //////////////////////////////////////////////// -->
+            <div class="work-area">
+              <mat-form-field appearance="fill">
+                <mat-label>Average Annual Income</mat-label>
+                <mat-select required formControlName="AverageAnnualIncome" [(ngModel)]="customerAccount.AverageAnnualIncome" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="0-10Million">0-10Million</mat-option>
+                  <mat-option value="10-50 million">10-50 million</mat-option>
+                  <mat-option value="above 50 million">above 50 million</mat-option>
+                </mat-select>
+                <mat-hint align="end">Average Annual Income</mat-hint>
+                <mat-error *ngIf="otherForm.get('AverageAnnualIncome').hasError('required')">
+                  Average Annual Income is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Source Of Investment</mat-label>
+                <mat-select required formControlName="SourceofInvestment" [(ngModel)]="customerAccount.SourceofInvestment" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="Employment">Employment</mat-option>
+                  <mat-option value="Business">Business</mat-option>
+                  <mat-option value="Others">Others</mat-option>
+                </mat-select>
+                <mat-hint align="end">Source Of Investment</mat-hint>
+                  <mat-error *ngIf="otherForm.get('SourceofInvestment').hasError('required')">
+                    Source Of Investment is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Purpose Of Investment</mat-label>
+                <mat-select required formControlName="PurposeofInvestment" [(ngModel)]="customerAccount.PurposeofInvestment" [ngModelOptions]="{standalone: true}">
+                  <mat-option value="Savings">Savings</mat-option>
+                  <mat-option value="Retirement">Retirement</mat-option>
+                  <mat-option value="Capital appreciation">Capital appreciation</mat-option>
+                  <mat-option value="Others">Others</mat-option>
+                </mat-select>
+                <mat-hint align="end">Purpose Of Investment</mat-hint>
+                  <mat-error *ngIf="otherForm.get('PurposeofInvestment').hasError('required')">
+                    Purpose Of Investment is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Office E-mail</mat-label>
+                <input formControlName="OfficeEmail" matInput [(ngModel)]="customerAccount.OfficeEmail" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>mail</mat-icon>
+                <mat-hint align="end">Office E-mail</mat-hint>
+                <mat-error *ngIf="otherForm.get('OfficeEmail').hasError('required')">
+                    Office E-mail is required </mat-error>
+                <mat-error *ngIf="otherForm.get('OfficeEmail').hasError('pattern')">
+                      Email enterd is invalid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Office Phone Number</mat-label>
+                <input formControlName="OfficePhoneNumber" matInput (keypress)="numericOnly($event)" [(ngModel)]="customerAccount.OfficePhoneNumber" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>phone</mat-icon>
+                <mat-hint align="end">Office Phone Number</mat-hint>
+                <mat-error *ngIf="otherForm.get('OfficePhoneNumber').hasError('required')">
+                    Office phone is required </mat-error>
+                <mat-error *ngIf="otherForm.get('OfficePhoneNumber').hasError('pattern')">
+                      Number enterd is invalid</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Official Address</mat-label>
+                <input required formControlName="OfficialAddress" matInput [(ngModel)]="customerAccount.OfficialAddress" [ngModelOptions]="{standalone: true}">
+                <mat-icon matSuffix>place</mat-icon>
+                <mat-hint align="end">Official Address</mat-hint>
+                <mat-error *ngIf="otherForm.get('OfficialAddress').hasError('required')">
+                  Official Address is required </mat-error>
+              </mat-form-field>
+            </div>
+    
+            <!-- ////////////////////////////////////// -->
+            
+      
+      
+            
+      
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Bank Code</mat-label>
+              <input formControlName="BankCode" matInput [(ngModel)]="customerAccount.BankCode" [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+            </mat-form-field>
+      
+            <mat-form-field appearance="fill">
+              <mat-label>Nationality</mat-label>
+              <input formControlName="Nationality" matInput [(ngModel)]="customerAccount.Nationality" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+      
+            <mat-form-field appearance="fill">
+              <mat-label>Branch Code</mat-label>
+              <input formControlName="BranchCode" matInput [(ngModel)]="customerAccount.BranchCode" [ngModelOptions]="{standalone: true}" (keypress)="numericOnly($event)">
+            </mat-form-field> -->
+            <!-- <button mat-raised-button color="primary">Primary</button> -->
+    
+    
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Politically Exposed?</mat-label>
+              <mat-select formControlName="PoliticallyExposed" [(ngModel)]="customerAccount.PoliticallyExposed" [ngModelOptions]="{standalone: true}">
+                <mat-option (click)="pepChange()" value="Yes">Yes</mat-option>
+                <mat-option (click)="pepChange()" value="No">No</mat-option>
+              </mat-select>
+              <mat-hint align="end">Politically Exposed</mat-hint>
+                <mat-error *ngIf="otherForm.get('PoliticallyExposed').hasError('required')">
+                  Politically Exposed status is required </mat-error>
+            </mat-form-field> -->
+    
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Identity Type</mat-label>
+              <mat-select formControlName="IdentityType" [(ngModel)]="customerAccount.IdType" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let item of idTypes" (click)="idTypeChange()" value={{item}}>{{item}}</mat-option>
+              </mat-select>
+              <mat-hint align="end">Identity Type</mat-hint>
+                <mat-error *ngIf="otherForm.get('IdentityType').hasError('required')">
+                  ID Type is required </mat-error>
+            </mat-form-field> -->
+          </form>
+
+          <mat-form-field appearance="fill" style="width: 350px !important;">
+            <mat-label>Are you or relatives/close associates a PEP?</mat-label>
+            <mat-select required [formControl]="PoliticallyExposed" [(ngModel)]="customerAccount.PoliticallyExposed" [ngModelOptions]="{standalone: true}">
+              <mat-option (click)="pepChange()" value="Yes">Yes</mat-option>
+              <mat-option (click)="pepChange()" value="No">No</mat-option>
+            </mat-select>
+            <mat-hint align="end">Politically Exposed</mat-hint>
+              <mat-error *ngIf="PoliticallyExposed.hasError('required')">
+                Politically Exposed status is required </mat-error>
+          </mat-form-field>
+
+          <form [formGroup]="pepForm">
+
+            <div class="pep-area">
+              <mat-form-field appearance="fill">
+                <mat-label>PEPWho</mat-label>
+                <input formControlName="PEPWho" [(ngModel)]="customerAccount.PEPWho" matInput [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Name of PEP</mat-hint>
+                <mat-error *ngIf="pepForm.get('PEPWho').hasError('required')">
+                  Name of PEP is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Politically Exposed Person</mat-label>
+                <input formControlName="PoliticallyExposedPerson" [(ngModel)]="customerAccount.PoliticallyExposedPerson" matInput [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Relationship with PEP</mat-hint>
+                <mat-error *ngIf="pepForm.get('PoliticallyExposedPerson').hasError('required')">
+                  Relationship with PEP is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Position Held</mat-label>
+                <input formControlName="PositionHeld" matInput [(ngModel)]="customerAccount.PositionHeld" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Position Held</mat-hint>
+                <mat-error *ngIf="pepForm.get('PositionHeld').hasError('required')">
+                  Position Held is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Date Of Office</mat-label>
+                <input formControlName="DateOfOffice" matInput type="date" [(ngModel)]="customerAccount.DateOfOffice" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Date Of Office</mat-hint>
+                <mat-error *ngIf="pepForm.get('DateOfOffice').hasError('required')">
+                  Date Of Office is required </mat-error>
+              </mat-form-field>
+              
+            </div>
+    
+          </form>
+
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Identity Type</mat-label>
+            <mat-select required [formControl]="IdentityType" [(ngModel)]="customerAccount.IdType" [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let item of idTypes" (click)="idTypeChange()" value={{item}}>{{item}}</mat-option>
+            </mat-select>
+            <mat-hint align="end">Identity Type</mat-hint>
+              <mat-error *ngIf="IdentityType.hasError('required')">
+                ID Type is required </mat-error>
+          </mat-form-field> -->
+
+          <mat-form-field appearance="fill">
+            <mat-label>Identity Type</mat-label>
+            <input required type = "text"
+               matInput 
+               [matAutocomplete]="idtype"
+               [formControl]="IdentityType" [(ngModel)]="customerAccount.IdType"
+               [ngModelOptions]="{standalone: true}"
+               (keypress)="validateIdType($event)"
+               >
+               <mat-hint align="end">Identity Type</mat-hint>
+              <mat-error *ngIf="IdentityType.hasError('required')">
+                ID Type is required </mat-error>
+            
+            <mat-autocomplete
+              #idtype="matAutocomplete"
+              >
+               <mat-option (click)="idTypeChange()" *ngFor="let item of filteredIdTypes | async" [value]="item">
+                  {{item}}
+               </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+    
+          <form [formGroup]="idForm">
+            <div class="id-area">
+      
+              <mat-form-field appearance="fill">
+                <mat-label>ID Number</mat-label>
+                <input required formControlName="IDNumber" matInput [(ngModel)]="customerAccount.IdNumber"
+                [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">ID Number</mat-hint>
+                <mat-error *ngIf="idForm.get('IDNumber').hasError('required')">
+                  ID Number is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Means Of ID Issue Date</mat-label>
+                <input formControlName="MeansOfIDIssueDate" (change)="setMinDate()" matInput type="date" [max]="today" [(ngModel)]="customerAccount.MeansOfIDIssueDate" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Means Of ID Issue Date</mat-hint>
+                <mat-error *ngIf="idForm.get('MeansOfIDIssueDate').hasError('required')">
+                  Means Of ID Issue Date is required </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill">
+                <mat-label>Means Of ID Expiration Date</mat-label>
+                <input formControlName="MeansOfIDExpirationDate" matInput type="date" [max]="min" [(ngModel)]="customerAccount.MeansOfIDExpirationDate" [ngModelOptions]="{standalone: true}">
+                <mat-hint align="end">Means Of ID Expiration Date</mat-hint>
+                <mat-error *ngIf="idForm.get('MeansOfIDExpirationDate').hasError('required')">
+                  Means Of ID Expiration Date is required </mat-error>
+              </mat-form-field>
+      
+            </div>
+            <button [disabled]="showSpinner || 
+                      !IdentityType.value || customerAccount.IdType == 'International passport'"
+                  (click)="validateDetails()" mat-raised-button color="primary">Validate Details</button>
+          </form>
+
+        </mat-tab>
+
+        <mat-tab label="Document upload">
+
+          <div class="file-area">
+
+            <!-- FILE UPLOAD AREA  -->
+            <div class="upload-div">
+    
+              <label for="file-upload" (click)="aopFileInput.click()">
+                AOP
+                  (Click to upload an AOP document)
+                  <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                      height="15px"></label>
+              <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'AOP')" #aopFileInput type="file" id="aopFileInput" style="display: none;">
+    
+            </div>
+    
+            <div class="upload-div">
+    
+              <label for="file-upload" (click)="tcFileInput.click()">
+                T&C
+                  (Click to upload a T&C document)
+                  <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                      height="15px"></label>
+              <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'T&C')" #tcFileInput type="file" formContolName="identificationCard" id="tcFileInput" style="display: none;">
+          </div>
+    
+          <div class="upload-div">
+    
+            <label for="file-upload" (click)="idFileInput.click()">
+              Means of ID
+                (Click to upload an ID document)
+                <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                    height="15px"></label>
+            <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'ID')" #idFileInput type="file" formContolName="identificationCard" id="idFileInput" style="display: none;">
+        </div>
+    
+          <div class="upload-div">
+    
+            <label for="file-upload" (click)="ubFileInput.click()">
+              Utility Bill
+                (Click to upload a Utility bill document)
+                <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                    height="15px"></label>
+            <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'Utility Bill')" #ubFileInput type="file" formContolName="identificationCard" id="ubFileInput" style="display: none;">
+    
+        </div>
+    
+        <div class="upload-div">
+    
+          <label for="file-upload" (click)="dpFileInput.click()">
+            Data privacy
+              (Click to upload a Data privacy document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'Data privacy')" #dpFileInput type="file" formContolName="identificationCard" id="dpFileInput" style="display: none;">
+    
+        </div>
+
+        <div class="upload-div">
+    
+          <label for="file-upload" (click)="sanctScreenFileInput.click()">
+            Sanction screening
+              (Click to upload a Sanction screening document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'Sanction screening')" #sanctScreenFileInput type="file" formContolName="identificationCard" id="sanctScreenFileInput" style="display: none;">
+    
+        </div>
+    
+        <div class="upload-div" *ngIf="customerAccount.AccountType == 'CORP'">
+    
+          <label for="file-upload" (click)="mmFileInput.click()">
+            Certified true copy of Memat
+              (Click to upload a Memat document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'Memat')" #mmFileInput type="file" formContolName="identificationCard" id="mmFileInput" style="display: none;">
+    
+        </div>
+    
+        <div class="upload-div" *ngIf="customerAccount.AccountType == 'CORP'">
+    
+          <label for="file-upload" (click)="coFileInput.click()">
+            Certified true copy COI
+              (Click to upload a COI document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'COI')" #coFileInput type="file" formContolName="identificationCard" id="coFileInput" style="display: none;">
+    
+        </div>
+    
+        <div class="upload-div" *ngIf="customerAccount.AccountType == 'CORP'">
+    
+          <label for="file-upload" (click)="caFileInput.click()">
+            Certified true copy Of CAC 2 & CAC 7
+              (Click to upload a CAC 2 & CAC 7 document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'CAC 2 & CAC 7')" #caFileInput type="file" formContolName="identificationCard" id="caFileInput" style="display: none;">
+    
+        </div>
+    
+        <div class="upload-div" *ngIf="customerAccount.AccountType == 'CORP'">
+    
+          <label for="file-upload" (click)="breFileInput.click()">
+            Board resolution
+              (Click to upload a Board resolution document)
+              <img class="downloadicon" src="./assets/images/upload2.png" width="15px"
+                  height="15px"></label>
+          <input hidden accept="image/x-png,image/gif,image/jpeg,application/pdf" (change)="onFormControlChanged($event, 'Board resolution')" #breFileInput type="file" formContolName="identificationCard" id="breFileInput" style="display: none;">
+    
+        </div>
+    
+    <!-- FILE UPLOAD STOP -->
+    
+          </div>
+    
+          <div *ngIf="customerAccount.Documents.length > 0" class="selected-file">
+            <div *ngFor="let item of customerAccount.Documents; let i=index" class="file-div">
+                <label class="file-text" for="">
+                    {{item.Name}} -- {{item.Title}}
+                    <img style="margin-left: 10px;" src="./assets/images/Group773.png" height="15"
+                        width="15">
+                </label>
+                <mat-icon title="remove" style="margin-left: 10px; cursor: pointer;" (click)="removeSelectedFile(item.Name, i)">
+                    cancel
+                </mat-icon>
+            </div>
+          </div>
+      
+
+        </mat-tab>
+      </mat-tab-group>
+
+     
+      <section *ngIf="showSpinner">
+        <mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="value"
+          [bufferValue]="bufferValue">
+        </mat-progress-bar>
+        <br>
+      </section>
+  
+      <button form="customerForm" [disabled]="showSpinner || !CustomerId" (click)="saveNewRequest()" type="submit" *ngIf="operationSelection === 'Existing Request'" mat-raised-button color="primary">Update</button>
+      
+      <button form="customerForm" [disabled]="showSpinner " (click)="saveNewRequest()" type="submit" *ngIf="operationSelection !== 'Existing Request'" mat-raised-button color="primary">Save</button>
+        
+    </div>
+  </div>
+
+  <!-- ######################### -->
+
+  
+  

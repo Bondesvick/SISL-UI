@@ -1,0 +1,91 @@
+
+<div class="page-main">
+
+  <div class="page-head-section">
+    <div style="color: #ffffff;
+                position: absolute;
+                left: 20px;
+                top: 60px;">
+      <p class="font-bold text-xl">{{ staffname }}</p>
+      <p *ngIf="branch !== 'null'" class="text-lg">Branch: {{ branch }}</p>
+      <p class="text-lg">Email: {{ staffemail }}</p>
+      <!-- <a href="#" class="text-lg">Sign Out</a> -->
+    </div>
+
+    <div 
+      style="color: #ffffff;
+              position: absolute;
+              top: 60px;
+              right: 150px;
+              font-size: 30px;
+              text-transform: uppercase;">sisl Account Management</div>
+    <div
+      style="
+        width: 75px;
+        border: 1px solid #ffffff;
+        transform: rotate(-75deg);
+        position: absolute;
+        top: 70px;
+        right: 80px;
+      ">
+    </div>
+
+    <div class="page-head-logo">
+      <img src="assets/images/standard_bank_logo.png" alt="stanbic logo" />
+    </div>
+  </div>
+
+  <mat-card class="page-body-section mat-elevation-z8">
+
+    <div class="body-left">
+      <a [href]="goBackUrl" class="flex items-center mb-12">
+        <div>
+          <mat-icon> keyboard_backspace </mat-icon>
+        </div>
+        <div class="ml-4">
+          <p class="text-md mb-0" style="color: #070707">Go Back</p>
+        </div>
+      </a>
+
+      <mat-selection-list #shoes [multiple]="false">
+
+        <!-- /////////////////////////// -->
+        <!-- <mat-list-option routerLink="/SislAccountManagement/capture-page" routerLinkActive="link-active">
+          <div class="link-div"><mat-icon>home</mat-icon> <h3>Capture Page</h3> </div>
+        </mat-list-option> -->
+
+        <mat-list-option *ngFor="let eachModule of applicationModules" [routerLink]="eachModule?.link" routerLinkActive="link-active">
+          <div class="link-div"><mat-icon>verified_user</mat-icon> <h3>{{ eachModule?.name }}</h3> </div>
+        </mat-list-option>
+
+        <!-- <mat-list-option routerLink="/SislAccountManagement/request-table" routerLinkActive="link-active">
+          <div class="link-div"><mat-icon>manage_accounts</mat-icon> <h3>Customer Details</h3> </div>
+        </mat-list-option>
+
+        <mat-list-option routerLink="/SislAccountManagement/rework-table" routerLinkActive="link-active">
+          <div class="link-div"><mat-icon>manage_accounts</mat-icon> <h3>Rework</h3> </div>
+        </mat-list-option> -->
+
+        
+      </mat-selection-list>
+      
+    </div>
+
+    <div class="body-right">
+     
+      <!-- ######################### -->
+
+      <!-- <div class="bg-img"></div> -->
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+     
+     
+    
+      
+
+        <!-- <pagination [totalItems]="30"></pagination> -->
+    </div>
+
+  </mat-card>
+</div>

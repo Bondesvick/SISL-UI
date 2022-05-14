@@ -1,0 +1,43 @@
+<div class="main">
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.FirstName?.toLowerCase() === injected?.userData?.FirstName.toLowerCase(),
+              'mismatch':injected?.resData?.FirstName?.toLowerCase() !== injected?.userData?.FirstName.toLowerCase()}"
+  >
+  First Name: {{injected?.resData?.FirstName}}(From {{injected.userData.IdType}})   -----  {{injected?.userData?.FirstName}}(From Form)
+  </div>
+
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.LastName?.toLowerCase() === injected?.userData?.SureName.toLowerCase(),
+              'mismatch':injected?.resData?.LastName?.toLowerCase() !== injected?.userData?.SureName.toLowerCase()}">
+    Last Name: {{injected.resData.LastName}}(From {{injected.userData.IdType}})   -----  {{injected.userData.SureName}}(From Form)
+  </div>
+
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.DateOfBirth === injected?.userData?.DateOfBirth,
+              'mismatch':injected?.resData?.DateOfBirth !== injected?.userData?.DateOfBirth}">
+    Date of Birth: {{injected.resData.DateOfBirth}}(From {{injected.userData.IdType}})   -----  {{injected.userData.DateOfBirth}}(From Form)
+  </div>
+
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.OtherName?.toLowerCase() === injected?.userData?.OtherNames.toLowerCase(),
+              'mismatch':injected?.resData?.OtherName?.toLowerCase() !== injected?.userData?.OtherNames.toLowerCase()}">
+    Other Name: {{injected.resData.OtherName}}(From {{injected.userData.IdType}})   -----  {{injected.userData.OtherNames}}(From Form)
+  </div>
+
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.Gender?.toLowerCase() === gender.toLowerCase(),
+              'mismatch':injected?.resData?.Gender?.toLowerCase() !== gender.toLowerCase()}">
+    Gender: {{injected.resData.Gender}}(From {{injected.userData.IdType}})   -----  {{gender}}(From Form)
+  </div>
+
+  <div class="a-div"
+  [ngClass]="{'amathch':injected?.resData?.PhoneNumber === injected?.userData?.Telephone,
+              'mismatch':injected?.resData?.PhoneNumber !== injected?.userData?.Telephone}">
+    Phone Number: {{injected.resData.PhoneNumber}}(From {{injected.userData.IdType}})   -----  {{injected.userData?.Telephone}}(From Form)
+  </div>
+
+  <!-- <div class="mismatch a-div">
+    Gender: {{injected.resData.PhoneNumber}}(From NIN)   -----  {{injected.userData. == "1"? 'Male':
+                         injected.userData.Sex == "2" ? 'Female' : 'None'}}
+  </div> -->
+</div>

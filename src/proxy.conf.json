@@ -1,0 +1,16 @@
+{
+    "/api": {
+      "target": "http://10.234.135.44:60013/smileidentity/verify",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite":{
+        "^/api":""
+      }
+    }
+
+    
+  }
+
+
+
+  
